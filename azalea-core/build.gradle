@@ -1,0 +1,36 @@
+
+
+apply plugin: 'java'
+apply plugin:  'maven' // 引入maven插件
+
+group 'org.azaleaframework'
+version '1.0.2-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+// 指定上传的路径
+def localMavenRepo = 'file://' + new File(System.getProperty('user.home'), 'software/azalea-maven-repository').absolutePath
+
+// 上传Task，Gradle会生成并上传pom.xml文件。
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: localMavenRepo)
+
+            //构造项目的Pom文件
+            pom.project {
+                name = project.name
+                packaging = 'jar'
+                description = 'description'
+            }
+        }
+
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
